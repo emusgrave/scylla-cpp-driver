@@ -30,7 +30,7 @@ endif()
 option(CASS_BUILD_EXAMPLES "Build examples" OFF)
 option(CASS_BUILD_INTEGRATION_TESTS "Build integration tests" OFF)
 option(CASS_BUILD_SHARED "Build shared library" ON)
-option(CASS_BUILD_STATIC "Build static library" OFF)
+option(CASS_BUILD_STATIC "Build static library" ON)
 option(CASS_BUILD_TESTS "Build tests" OFF)
 option(CASS_BUILD_UNIT_TESTS "Build unit tests" OFF)
 option(CASS_DEBUG_CUSTOM_ALLOC "Debug custom allocator" OFF)
@@ -136,7 +136,7 @@ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
       set(CASS_USE_STD_ATOMIC ON)
     endif()
   endif()
-elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR 
+elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR
        "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
   # Version determined from: http://clang.llvm.org/cxx_status.html
   # 3.2 includes the full C++11 memory model, but 3.1 had atomic
@@ -177,13 +177,13 @@ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR
   endif()
 
   if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR
-     "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang") 
+     "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
     # Clang/Intel specific compiler options
     # I disabled long-long warning because boost generates about 50 such warnings
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -Wextra -Wno-long-long -Wno-unused-parameter")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-variadic-macros -Wno-zero-length-array")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-local-typedef -Wno-unknown-warning-option")
-  else() 
+  else()
     # GCC specific compiler options
     # I disabled long-long warning because boost generates about 50 such warnings
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -Wextra -Wno-long-long -Wno-unused-parameter -Wno-variadic-macros")

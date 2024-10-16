@@ -6,7 +6,7 @@ source_group("Header Files\\" REGULAR_EXPRESSION ".*\\.h(pp)?")
 if(CASS_BUILD_SHARED)
   add_library(minizip OBJECT ${SOURCES})
   target_include_directories(minizip PRIVATE ${ZLIB_INCLUDE_DIRS})
-  set_target_properties(minizip PROPERTIES 
+  set_target_properties(minizip PROPERTIES
     POSITION_INDEPENDENT_CODE ON
     FOLDER "Driver/Dependencies")
 endif()
@@ -14,6 +14,9 @@ endif()
 if(CASS_BUILD_STATIC)
   add_library(minizip_static OBJECT ${SOURCES})
   target_include_directories(minizip_static PRIVATE ${ZLIB_INCLUDE_DIRS})
-  set_target_properties(minizip_static PROPERTIES 
+  set_target_properties(minizip_static PROPERTIES
     FOLDER "Driver/Dependencies")
+  set_target_properties(minizip_static PROPERTIES
+    MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+  )
 endif()
