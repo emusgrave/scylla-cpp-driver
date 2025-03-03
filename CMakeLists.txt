@@ -166,6 +166,31 @@ endif()
 
 set (CMAKE_CXX_STANDARD ${CASS_CPP_STANDARD})
 
+# Add ASAN configuration option
+option(ASAN_ENABLED "Enable Address Sanitizer" OFF)
+
+# Configure ASAN if enabled
+if(ASAN_ENABLED)
+  message(STATUS "Address Sanitizer (ASAN) enabled")
+
+  if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+    # For MSVC, add the address sanitizer flag and remove runtime checks
+    # which conflict with ASAN
+    string(REGEX REPLACE "/RTC1" "" CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /fsanitize=address")
+
+    # Optionally add additional ASAN flags
+    # set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} /INCREMENTAL:NO")
+  elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR
+         "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang" OR
+         "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+    # For GCC/Clang, add the address sanitizer flags
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=address -fno-omit-frame-pointer")
+    set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -fsanitize=address")
+    set(CMAKE_SHARED_LINKER_FLAGS_DEBUG "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} -fsanitize=address")
+  endif()
+endif()
+
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR
    "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang" OR
    "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
