@@ -199,7 +199,7 @@ if(CASS_BUILD_STATIC)
       RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
   set_target_properties(scylla-cpp-driver_static PROPERTIES FOLDER "Driver")
 
-  target_compile_definitions(scylla-cpp-driver_static PRIVATE CASS_STATIC)
+  target_compile_definitions(scylla-cpp-driver_static PUBLIC CASS_STATIC)
 
   if(CASS_USE_BOOST_ATOMIC AND BOOST_LIBRARY_NAME)
     add_dependencies(scylla-cpp-driver_static ${BOOST_LIBRARY_NAME})
